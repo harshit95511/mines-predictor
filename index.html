@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>KRISPY MODZ — Mines Hack</title>
+    <style>
+        /* Base styles */
+        :root{ --bg:#0b0f14; --card:#0f1720; --neon-green:#00ff99; --neon-red:#ff3b3b; --accent:#7c3aed; --glass: rgba(255,255,255,0.03); --glass-2: rgba(255,255,255,0.02); --mono: 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+        *{box-sizing:border-box}
+        body{margin:0; font-family:var(--mono); background:radial-gradient(1000px 600px at 10% 10%, rgba(124,58,237,0.06), transparent), linear-gradient(180deg,#031014 0%, #07101a 100%); color:#dbeafe; min-height:100vh; display:flex; align-items:center; justify-content:center}
+        .container{width:980px; max-width:96%;}
+        .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:28px; border-radius:14px; box-shadow:0 10px 40px rgba(2,6,23,0.6);}
+        .glitch-wrap{display:flex; align-items:center; gap:20px; margin-bottom:18px}
+        .glitch{font-size:40px; font-weight:800; letter-spacing:1px; position:relative; color:#fff; text-transform:uppercase; line-height:1}
+        .glitch::before, .glitch::after{content:attr(data-text); position:absolute; left:0; top:0}
+        .glitch::before{clip-path:polygon(0 0,100% 0,100% 45%,0 45%); transform:translate(2px,-2px); color:var(--neon-green); opacity:.8; mix-blend-mode:screen}
+        .glitch::after{clip-path:polygon(0 55%,100% 55%,100% 100%,0 100%); transform:translate(-2px,2px); color:var(--neon-red); opacity:.9; mix-blend-mode:screen}
+        @keyframes flicker{0%,100%{opacity:1}50%{opacity:.75}} .glitch{animation:flicker 2s infinite}
+        label{display:block; font-size:13px; margin-bottom:6px; color:#bcd}
+        input{width:100%; padding:10px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.04); background:transparent; color:inherit}
+        button{cursor:pointer; padding:10px 12px; border-radius:8px; border:0}
+        .btn-primary{background:linear-gradient(90deg,var(--accent),#5eead4); color:#021; font-weight:700}
+        .btn-ghost{background:transparent; border:1px solid rgba(255,255,255,0.06)}
+        .mines-wrap{display:none; margin-top:10px}
+        .controls{display:flex; gap:10px; align-items:center; margin-bottom:12px}
+        .btn-danger{background:var(--neon-red); color:white; font-weight:700; padding:10px 14px; border-radius:8px}
+        .grid{display:grid; grid-template-columns:repeat(5,1fr); gap:10px; max-width:520px}
+        .cell{height:84px; border-radius:10px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:18px; position:relative; overflow:hidden; border:1px solid rgba(255,255,255,0.03); cursor:default}
+        .cell.safe{box-shadow:0 6px 18px rgba(0,255,153,0.07), inset 0 0 24px rgba(0,255,153,0.03)}
+        .safe .gem{width:42px; height:42px; display:flex; align-items:center; justify-content:center; border-radius:8px; background:linear-gradient(180deg, rgba(0,255,153,0.14), rgba(0,255,153,0.06)); box-shadow:0 8px 30px rgba(0,255,153,0.08)}
+        .gem svg{filter:drop-shadow(0 6px 18px rgba(0,255,153,0.12))}
+        @keyframes pulseNeon{0%{box-shadow:0 0 0px rgba(0,255,153,0.12)}50%{box-shadow:0 0 20px rgba(0,255,153,0.12)}100%{box-shadow:0 0 0px rgba(0,255,153,0.12)}} .safe .gem{animation:pulseNeon 2s infinite}
+        .cell.unsafe{background:linear-gradient(180deg, rgba(255,59,59,0.03), rgba(255,59,59,0.01)); border:1px solid rgba(255,59,59,0.08)}
+        .bomb{width:42px; height:42px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,59,59,0.08)}
+        .explode::after{content:''; position:absolute; inset: -20%; border-radius:50%; background:radial-gradient(circle, rgba(255,200,160,0.25), rgba(255,120,80,0.06) 40%, transparent 60%); animation: blast 700ms ease-out forwards}
+        @keyframes blast{0%{transform:scale(0); opacity:1}100%{transform:scale(1.6); opacity:0}}
+        .meta{margin-top:12px; font-size:13px; color:#9fb}
+        
+        /* Login Screen Specific Styles */
+        .login-panel{width:400px; max-width:90%; padding:28px; border-radius:14px; background:linear-gradient(180deg,var(--glass),var(--glass-2)); box-shadow:0 10px 40px rgba(2,6,23,0.6); margin: auto;}
+        #loginScreen{ display: flex; align-items: center; justify-content: center; min-height: 80vh;} /* Center login box */
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="loginScreen">
+            <div class="login-panel">
+                <h3 style="margin:0 0 16px 0">Access Required</h3>
+                <label for="passwordInput">Secret Password</label>
+                <input id="passwordInput" type="password" placeholder="enter secret password">
+
+                <div style="margin-top:16px">
+                    <button class="btn-primary" id="btnLogin">Enter</button>
+                </div>
+
+                <div style="margin-top:20px; font-size:13px; color:#9fb">Enter the password hardcoded in the script to continue.</div>
+            </div>
+        </div>
+
+        <div class="mines-wrap" id="minesScreen">
+            <div class="controls">
+                <div style="flex:1">
+                    <div class="glitch" data-text="MINES GRID" style="font-size:22px">MINES GRID</div>
+                    <div class="meta" style="margin-top:0">Enter the Server Seed to calculate mines.</div>
+                    
+                    <div style="margin-top:12px">
+                        <label for="serverSeedInput">Server Seed</label>
+                        <input id="serverSeedInput" placeholder="write server seed here">
+                    </div>
+                </div>
+                <div style="display:flex; gap:8px; flex-direction:column; justify-content:flex-end">
+                    <button id="btnShowMines" class="btn-danger">Show Mines</button>
+                    <button id="btnResetBoard" class="btn-ghost">Reset Board</button>
+                    <button id="btnLogout" class="btn-ghost">Logout</button>
+                </div>
+            </div>
+
+            <div class="grid" id="grid"></div>
+            <div style="margin-top:12px; font-size:13px; color:#9fb">Tip: The board is static until "Show Mines" or "Reset Board" is clicked. Cells are not clickable.</div>
+
+        </div>
+
+    </div>
+
+    <script>
+        /******************* CONFIGURATION *******************/
+       
+        const CORRECT_PASSWORD = 'krispy_modz'; 
+        // --- ------------------------------- ---
+
+        /******************* LOGIN LOGIC *******************/
+        document.getElementById('btnLogin').addEventListener('click', ()=>{
+            const inputPass = document.getElementById('passwordInput').value.trim();
+            
+            if (inputPass === CORRECT_PASSWORD) {
+                // Successful Login
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('minesScreen').style.display = 'block';
+                // Reset container width for game screen
+                document.querySelector('.container').style.width = '980px'; 
+                startGame();
+            } else {
+                alert('Incorrect Password! Try again.');
+                document.getElementById('passwordInput').value = ''; // Clear the input
+            }
+        });
+
+        document.getElementById('btnLogout').addEventListener('click', ()=>{
+            // Simple Logout: Hide game, show login, clear password input
+            document.getElementById('minesScreen').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('passwordInput').value = '';
+            // Reset container width for login screen
+            document.querySelector('.container').style.width = '400px'; 
+            resetRound();
+        });
+
+
+        /******************* MINES GRID LOGIC *******************/
+        const GRID_COUNT = 25; 
+        const SAFE_COUNT = 4; 
+        let safeSet = new Set(); 
+        const gridEl = document.getElementById('grid');
+        
+        // --- Grid Generation ---
+        function makeGrid(){ 
+            gridEl.innerHTML=''; 
+            for(let i=1;i<=GRID_COUNT;i++){ 
+                const cell=document.createElement('div'); 
+                cell.className='cell'; 
+                cell.dataset.index=i; 
+                cell.innerHTML = `<div style="text-align:center"><div style="font-size:11px;color:#88a;">#${i}</div><div style="margin-top:6px">${i}</div></div>`; 
+                gridEl.appendChild(cell) 
+            } 
+        }
+
+        // --- Mine/Safe Spot Calculation (Random for client-side demo) ---
+        function pickSafeMines(){ 
+            const s=new Set(); 
+            // NOTE: This uses random logic as it's a client-side demo. 
+            // In a real application, you'd use the Server Seed input here 
+            // to deterministically calculate the safe spots.
+            while(s.size<SAFE_COUNT){ 
+                const r=Math.floor(Math.random() * GRID_COUNT) + 1; 
+                s.add(r);
+            } 
+            safeSet=s; 
+            console.log('New Safe Set (Mines) generated:', Array.from(s)); 
+        }
+
+        // --- Reveal Logic (Shows Safe/Mine icons) ---
+        function revealCell(el, idx){ 
+            el.classList.remove('safe', 'unsafe', 'explode');
+            
+            if(safeSet.has(idx)){ 
+                el.classList.add('safe'); 
+                el.innerHTML = `<div class="gem" title="SAFE"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l2.6 4.8L20 8l-4 3.6L17 18l-5-2.6L7 18l1-6.4L4 8l5.4-1.2L12 2z" fill="currentColor"/></svg></div>` 
+            } else { 
+                el.classList.add('unsafe'); 
+                el.classList.add('explode'); 
+                el.innerHTML = `<div class="bomb" title="MINE"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5a7 7 0 100 14 7 7 0 000-14z" fill="currentColor"/><path d="M7 3l1.5 1.5" stroke="#000" stroke-width="1" stroke-linecap="round"/></svg></div>` 
+            } 
+        }
+
+        // --- Show Mines Button Action ---
+        document.getElementById('btnShowMines').addEventListener('click', ()=>{ 
+            console.log("Show Mines clicked. Revealing board.");
+            for(let i=1;i<=GRID_COUNT;i++){
+                const el = gridEl.querySelector(`.cell[data-index='${i}']`);
+                if(el){
+                    revealCell(el, i);
+                }
+            }
+        });
+        
+        // --- Reset Board Button Action ---
+        document.getElementById('btnResetBoard').addEventListener('click', ()=>{ 
+            console.log("Reset Board clicked. Generating new board.");
+            resetRound(); 
+        });
+
+        // --- Reset Function ---
+        function resetRound(){ 
+            for(let i=1;i<=GRID_COUNT;i++){
+                const el = gridEl.querySelector(`.cell[data-index='${i}']`);
+                if(el){
+                    el.classList.remove('safe', 'unsafe', 'explode');
+                    el.innerHTML = `<div style="text-align:center"><div style="font-size:11px;color:#88a;">#${i}</div><div style="margin-top:6px">${i}</div></div>`;
+                }
+            }
+            pickSafeMines(); 
+        }
+        
+        // --- Game Initialization ---
+        function startGame(){ 
+            makeGrid(); 
+            pickSafeMines(); 
+        }
+
+        // Initial setup: Ensure the container starts narrow for the login screen
+        document.querySelector('.container').style.width = '400px';
+    </script>
+</body>
+</html>
